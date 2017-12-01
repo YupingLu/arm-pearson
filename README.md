@@ -1,8 +1,10 @@
 # Scripts to handle arm data
-met_pearson.py                  met_pearson_1.png        
-met_pearson_precip_corr.py      met_pearson_3.png  
-met_pearson_precip.py           met_pearson_2.png   
-met_pearson_precip_corr_lag.py  met_pearson_4.png  
+| Python scripts | Correlation network |
+| ------ | ----------- |
+|met_pearson.py                  |met_pearson_1.png        
+|met_pearson_precip_corr.py      |met_pearson_3.png  
+|met_pearson_precip.py           |met_pearson_2.png   
+|met_pearson_precip_corr_lag.py  |met_pearson_4.png  
 
 # Build the environment on your mac.
 
@@ -49,20 +51,27 @@ met_pearson_precip_corr_lag.py  met_pearson_4.png
 netcdf files from ARM use time as dim, 1440 currently
 
 # Examples of common uses of ncdump
-1)To look at just the header information (also called the schema or metadata):
+1. To look at just the header information (also called the schema or metadata):
+```
 ncdump -h sgp.cdf 
-
-2)To look at header and coordinate information, but not the data:
+```
+2. To look at header and coordinate information, but not the data:
+```
 ncdump -c sgp.cdf
-
-3)To look at all the data in the file, in addition to the metadata:
+```
+3. To look at all the data in the file, in addition to the metadata:
+```
 ncdump sgp.cdf
-
-4)To look at a subset of the data by specifying one or more variables:
+```
+4. To look at a subset of the data by specifying one or more variables:
+```
 ncdump -v lat,time sgp.cdf
-
-5)To see times in human-readable form:
+```
+5. To see times in human-readable form:
+```
 ncdump -t -v lat,time sgp.cdf
-
-6)To look at what kind of netCDF data is in the file (classic, 64-bit offset, netCDF-4, or netCDF-4 classic model):
+```
+6. To look at what kind of netCDF data is in the file (classic, 64-bit offset, netCDF-4, or netCDF-4 classic model):
+```
 ncdump -k sgp.cdf
+```
