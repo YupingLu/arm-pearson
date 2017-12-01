@@ -4,43 +4,48 @@ met_pearson_precip_corr.py      met_pearson_3.png
 met_pearson_precip.py           met_pearson_2.png   
 met_pearson_precip_corr_lag.py  met_pearson_4.png  
 
-
 # Build the environment on your mac.
 
-1) Install numpy in the arm environment
-pip install numpy numpy scipy Cython
-
-2) Check installed modules
-2.1 go into python and use this command: help("modules")
-
-2.2 pip freeze
-
-3) Build and install zlib
-ZDIR=/usr/local
-./configure --prefix=${ZDIR}
-make check
-make install
-
-4) Build and install HDF5
-H5DIR=/usr/local
-./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl --enable-shared
-make check
-make install
-
-5) Build and install netCDF-4 C lib
-NCDIR=/usr/local
-CPPFLAGS=-I${H5DIR}/include LDFLAGS=-L${H5DIR}/lib ./configure --prefix=${NCDIR} --enable-netcdf-4 --enable-shared
-make check
-make install
-
-6) Install netCDF python package
-download the latest source code from github https://github.com/Unidata/netcdf4-python
-python setup.py build
-python setup.py install
-
-To run all the tests, execute 
-cd test && python run_all.py
-
+1. Install numpy in the arm environment
+```
+  pip install numpy numpy scipy Cython
+```
+2. Check installed modules
+```
+  2.1 go into python and use this command: help("modules")
+  2.2 pip freeze
+```
+3. Build and install zlib
+```
+  ZDIR=/usr/local
+  ./configure --prefix=${ZDIR}
+  make check
+  make install
+```
+4. Build and install HDF5
+```
+  H5DIR=/usr/local
+  ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl --enable-shared
+  make check
+  make install
+```
+5. Build and install netCDF-4 C lib
+```
+  NCDIR=/usr/local
+  CPPFLAGS=-I${H5DIR}/include LDFLAGS=-L${H5DIR}/lib ./configure --prefix=${NCDIR} --enable-netcdf-4 --enable-shared
+  make check
+  make install
+```
+6. Install netCDF python package
+```
+  download the latest source code from github https://github.com/Unidata/netcdf4-python
+  python setup.py build
+  python setup.py install
+```
+7. To run all the tests, execute 
+```
+  cd test && python run_all.py
+```
 netcdf files from ARM use time as dim, 1440 currently
 
 # Examples of common uses of ncdump
