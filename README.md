@@ -1,10 +1,10 @@
 # Scripts to handle arm data
 | Python scripts | Correlation network |
 | ------ | ----------- |
-|met_pearson.py                  |met_pearson_1.png        
-|met_pearson_precip_corr.py      |met_pearson_3.png  
-|met_pearson_precip.py           |met_pearson_2.png   
-|met_pearson_precip_corr_lag.py  |met_pearson_4.png  
+|met_pearson.py                  |met_pearson_1.png|
+|met_pearson_precip.py           |met_pearson_2.png|
+|met_pearson_precip_corr.py      |met_pearson_3.png| 
+|met_pearson_precip_corr_lag.py  |met_pearson_4.png| 
 
 # Build the environment on your mac.
 
