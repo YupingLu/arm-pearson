@@ -16,14 +16,14 @@ met4 with precip_corr one day lag
 import netCDF4
 import numpy as np
 import datetime
-import matplotlib.pyplot as plt
-import pandas
+#import matplotlib.pyplot as plt
+#import pandas
 from os import listdir
 from os.path import isfile, join
 
 # Calculate the days between the given time span
-start = datetime.date(2016, 1, 1)
-end = datetime.date(2016, 12, 31)
+start = datetime.date(2017, 1, 1)
+end = datetime.date(2017, 12, 31)
 span = end - start
 
 # Assgin sgpmetE11 vars with specific length
@@ -44,7 +44,7 @@ sgpmetE11 = []
 names = ['atmos_pressure', 'temp_mean', 'rh_mean', 'vapor_pressure_mean', 'wspd_arith_mean', 'tbrg_precip_total_corr']
 
 # Read netcdf files
-path = "/Users/yupinglu/OneDrive/project/ARM/data/sgpmetE11"
+path = "/Users/yupinglu/OneDrive/project/ARM/data/sample_data"
 # path = "/Users/ylk/OneDrive/project/ARM/data/sgpmetE11"
 netcdfs = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".cdf")]
 
@@ -68,7 +68,7 @@ for cdf in netcdfs:
     dates = netCDF4.num2date(tm[:], units=tm.units)
     # Read data into different sgpmetE11 vars with filter applied
     for i in range(len(atmos_pressure)):
-        index = int((dates[i] - datetime.datetime(2016, 1, 1, 0, 0)).total_seconds() / 60)
+        index = int((dates[i] - datetime.datetime(2017, 1, 1, 0, 0)).total_seconds() / 60)
         sgpmetE11_atmos_pressure[index]            = atmos_pressure[i]
         sgpmetE11_temp_mean[index]                 = temp_mean[i]
         sgpmetE11_rh_mean[index]                   = rh_mean[i]
@@ -84,18 +84,18 @@ for cdf in netcdfs:
     f.close()
 
 # Filter empty values and handle one day lag
-sgpmetE11_atmos_pressure            = sgpmetE11_atmos_pressure[1440:]
-sgpmetE11_temp_mean                 = sgpmetE11_temp_mean[1440:]
-sgpmetE11_rh_mean                   = sgpmetE11_rh_mean[1440:]
-sgpmetE11_vapor_pressure_mean       = sgpmetE11_vapor_pressure_mean[1440:]
-sgpmetE11_wspd_arith_mean           = sgpmetE11_wspd_arith_mean[1440:]
-sgpmetE11_qc_atmos_pressure         = sgpmetE11_qc_atmos_pressure[1440:]
-sgpmetE11_qc_temp_mean              = sgpmetE11_qc_temp_mean[1440:]
-sgpmetE11_qc_rh_mean                = sgpmetE11_qc_rh_mean[1440:]
-sgpmetE11_qc_vapor_pressure_mean    = sgpmetE11_qc_vapor_pressure_mean[1440:]
-sgpmetE11_qc_wspd_arith_mean        = sgpmetE11_qc_wspd_arith_mean[1440:]
-sgpmetE11_tbrg_precip_total_corr    = sgpmetE11_tbrg_precip_total_corr[:len(sgpmetE11_tbrg_precip_total_corr)-1440]
-sgpmetE11_qc_tbrg_precip_total_corr = sgpmetE11_qc_tbrg_precip_total_corr[:len(sgpmetE11_qc_tbrg_precip_total_corr)-1440]
+sgpmetE11_atmos_pressure            = sgpmetE11_atmos_pressure[:len(sgpmetE11_atmos_pressure)-1440]
+sgpmetE11_temp_mean                 = sgpmetE11_temp_mean[:len(sgpmetE11_temp_mean)-1440]
+sgpmetE11_rh_mean                   = sgpmetE11_rh_mean[:len(sgpmetE11_rh_mean)-1440]
+sgpmetE11_vapor_pressure_mean       = sgpmetE11_vapor_pressure_mean[:len(sgpmetE11_vapor_pressure_mean)-1440]
+sgpmetE11_wspd_arith_mean           = sgpmetE11_wspd_arith_mean[:len(sgpmetE11_wspd_arith_mean)-1440]
+sgpmetE11_qc_atmos_pressure         = sgpmetE11_qc_atmos_pressure[:len(sgpmetE11_qc_atmos_pressure)-1440]
+sgpmetE11_qc_temp_mean              = sgpmetE11_qc_temp_mean[:len(sgpmetE11_qc_temp_mean)-1440]
+sgpmetE11_qc_rh_mean                = sgpmetE11_qc_rh_mean[:len(sgpmetE11_qc_rh_mean)-1440]
+sgpmetE11_qc_vapor_pressure_mean    = sgpmetE11_qc_vapor_pressure_mean[:len(sgpmetE11_qc_vapor_pressure_mean)-1440]
+sgpmetE11_qc_wspd_arith_mean        = sgpmetE11_qc_wspd_arith_mean[:len(sgpmetE11_qc_wspd_arith_mean)-1440]
+sgpmetE11_tbrg_precip_total_corr    = sgpmetE11_tbrg_precip_total_corr[1440:]
+sgpmetE11_qc_tbrg_precip_total_corr = sgpmetE11_qc_tbrg_precip_total_corr[1440:]
 
 for i in range(len(sgpmetE11_tbrg_precip_total_corr)):
     if sgpmetE11_qc_atmos_pressure[i] != 0 or sgpmetE11_qc_temp_mean[i] != 0 \
@@ -159,12 +159,21 @@ print(mat)
 
 # Pick another color that is obvious to tell the difference
 # Plot correlation matrix
-fig= plt.figure()
-ax = fig.add_subplot(111)
-cax= ax.matshow(mat, vmin=-1, vmax=1)
-fig.colorbar(cax)
-ticks = np.arange(0,mat.shape[0],1)
-ax.set_xticks(ticks)
-ax.set_yticks(ticks)
-ax.set_yticklabels(names)
-plt.show()
+#fig= plt.figure()
+#ax = fig.add_subplot(111)
+#cax= ax.matshow(mat, vmin=-1, vmax=1)
+#fig.colorbar(cax)
+#ticks = np.arange(0,mat.shape[0],1)
+#ax.set_xticks(ticks)
+#ax.set_yticks(ticks)
+#ax.set_yticklabels(names)
+#plt.show()
+
+'''
+[[ 1.         -0.57047323 -0.33150279 -0.51431958 -0.51142508  0.00670031]
+ [-0.57047323  1.         -0.23464512  0.08683744  0.70886996  0.21494305]
+ [-0.33150279 -0.23464512  1.          0.94587296 -0.48804501 -0.42986727]
+ [-0.51431958  0.08683744  0.94587296  1.         -0.26041174 -0.37324093]
+ [-0.51142508  0.70886996 -0.48804501 -0.26041174  1.          0.37000441]
+ [ 0.00670031  0.21494305 -0.42986727 -0.37324093  0.37000441  1.        ]]
+'''

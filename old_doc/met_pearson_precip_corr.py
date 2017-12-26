@@ -16,14 +16,14 @@ met3 with precip_corr
 import netCDF4
 import numpy as np
 import datetime
-import matplotlib.pyplot as plt
-import pandas
+#import matplotlib.pyplot as plt
+#import pandas
 from os import listdir
 from os.path import isfile, join
 
 # Calculate the days between the given time span
-start = datetime.date(2016, 1, 1)
-end = datetime.date(2016, 12, 31)
+start = datetime.date(2017, 1, 1)
+end = datetime.date(2017, 12, 31)
 span = end - start
 
 # Assgin sgpmetE11 vars with specific length
@@ -38,7 +38,7 @@ sgpmetE11 = []
 names = ['atmos_pressure', 'temp_mean', 'rh_mean', 'vapor_pressure_mean', 'wspd_arith_mean', 'tbrg_precip_total_corr']
 
 # Read netcdf files
-path = "/Users/yupinglu/OneDrive/project/ARM/data/sgpmetE11"
+path = "/Users/yupinglu/OneDrive/project/ARM/data/sample_data"
 # path = "/Users/ylk/OneDrive/project/ARM/data/sgpmetE11"
 netcdfs = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".cdf")]
 
@@ -66,7 +66,7 @@ for cdf in netcdfs:
         and qc_rh_mean[i] == 0 and qc_vapor_pressure_mean[i] == 0 \
         and qc_wspd_arith_mean[i] == 0 and qc_tbrg_precip_total_corr[i] == 0 \
         and tbrg_precip_total_corr[i] != 0:
-            index = int((dates[i] - datetime.datetime(2016, 1, 1, 0, 0)).total_seconds() / 60)
+            index = int((dates[i] - datetime.datetime(2017, 1, 1, 0, 0)).total_seconds() / 60)
             sgpmetE11_atmos_pressure[index]         = atmos_pressure[i]
             sgpmetE11_temp_mean[index]              = temp_mean[i]
             sgpmetE11_rh_mean[index]                = rh_mean[i]
@@ -126,12 +126,21 @@ print(mat)
 
 # Pick another color that is obvious to tell the difference
 # Plot correlation matrix
-fig= plt.figure()
-ax = fig.add_subplot(111)
-cax= ax.matshow(mat, vmin=-1, vmax=1)
-fig.colorbar(cax)
-ticks = np.arange(0,mat.shape[0],1)
-ax.set_xticks(ticks)
-ax.set_yticks(ticks)
-ax.set_yticklabels(names)
-plt.show()
+#fig= plt.figure()
+#ax = fig.add_subplot(111)
+#cax= ax.matshow(mat, vmin=-1, vmax=1)
+#fig.colorbar(cax)
+#ticks = np.arange(0,mat.shape[0],1)
+#ax.set_xticks(ticks)
+#ax.set_yticks(ticks)
+#ax.set_yticklabels(names)
+#plt.show()
+
+'''
+[[  1.00000000e+00   6.72756224e-01  -4.36523961e-01  -1.95340879e-02  -6.72646113e-01   1.34268372e-01]
+ [  6.72756224e-01   1.00000000e+00  -5.87191410e-01  -1.47641782e-02  -2.90936273e-01  -8.77339318e-04]
+ [ -4.36523961e-01  -5.87191410e-01   1.00000000e+00   8.11384792e-01   1.60482744e-01  -3.43597338e-01]
+ [ -1.95340879e-02  -1.47641782e-02   8.11384792e-01   1.00000000e+00  -5.53125510e-02  -4.08593513e-01]
+ [ -6.72646113e-01  -2.90936273e-01   1.60482744e-01  -5.53125510e-02   1.00000000e+00  -8.65140824e-03]
+ [  1.34268372e-01  -8.77339318e-04  -3.43597338e-01  -4.08593513e-01  -8.65140824e-03   1.00000000e+00]]
+'''
