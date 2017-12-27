@@ -163,11 +163,7 @@ def get_pearson_corr_lag(met_pearson):
     met_pearson.mat2 = np.corrcoef(sgpmet)
 
 # Read netcdf files and return the correlation matrices
-<<<<<<< HEAD
 def read_netcdf(path, year, inst, met_pearson):
-=======
-def read_netcdf(path, year, met_pearson):
->>>>>>> origin/master
     pattern = 'sgpmet'
     pattern += inst
     pattern += '.??.'
@@ -225,11 +221,7 @@ def main(argv):
 
     span = total_days(args.year)
     met_pearson = MetPearson(span)
-<<<<<<< HEAD
     read_netcdf(args.path, args.year, args.inst, met_pearson)
-=======
-    read_netcdf(args.path, args.year, met_pearson)
->>>>>>> origin/master
 
     # Instrument_name_year.csv
     # Save mat0
@@ -237,40 +229,22 @@ def main(argv):
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.0.csv'
-<<<<<<< HEAD
     np.savetxt(csv_name, met_pearson.mat, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean")
-=======
-    numpy.savetxt(csv_name, met_pearson.mat, delimiter=",", comments="", \
-                  header="atmos_pressure, temp_mean, rh_mean, \
-                  vapor_pressure_mean, wspd_arith_mean")
->>>>>>> origin/master
     # Save mat1
     csv_name = ''
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.1.csv'
-<<<<<<< HEAD
     np.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
-=======
-    numpy.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", \
-                  header="atmos_pressure, temp_mean, rh_mean, \
-                  vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
->>>>>>> origin/master
     # Save mat2
     csv_name = ''
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.2.csv'
-<<<<<<< HEAD
     np.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
-=======
-    numpy.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", \
-                  header="atmos_pressure, temp_mean, rh_mean, \
-                  vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
->>>>>>> origin/master
     return 0
 
 if __name__ == "__main__":
