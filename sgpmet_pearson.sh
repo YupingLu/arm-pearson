@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Shell scripts to run sgpmet_pearson.py in batch
+# Shell script to run sgpmet_pearson.py in batch
 # Usage : nohup ./sgpmet_pearson.sh > foo.out 2> foo.err < /dev/null &
 # Author: Yuping Lu yupinglu89@gmail.com
 # Date  : Dec 27 2017
