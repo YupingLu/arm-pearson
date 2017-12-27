@@ -43,12 +43,12 @@ def total_days(year):
     return end - start
 
 # Normalize sgpmet variables
-def norm_var(met_var, sgpmet):
-    try:
-        sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
-    except Exception as e:
-        traceback.print_exc()
+def norm_var(met_var, sgpmet, name):
+    if (met_var.max() - met_var.min()) == 0:
+        print(name, ": Zero Values", file=sys.stderr)
         sys.exit(1)
+    else:
+        sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
 
 # Calculate the correlation matrix
 def get_pearson(met_pearson):
@@ -76,11 +76,11 @@ def get_pearson(met_pearson):
     np_vapor_pressure_mean = np.asarray([x for x in tmp_vapor_pressure_mean if x is not None])
     np_wspd_arith_mean     = np.asarray([x for x in tmp_wspd_arith_mean if x is not None])
     # Normalize sgpmet variables
-    norm_var(np_atmos_pressure, sgpmet)
-    norm_var(np_temp_mean, sgpmet)
-    norm_var(np_rh_mean, sgpmet)
-    norm_var(np_vapor_pressure_mean, sgpmet)
-    norm_var(np_wspd_arith_mean, sgpmet)
+    norm_var(np_atmos_pressure, sgpmet, "atmos_pressure")
+    norm_var(np_temp_mean, sgpmet, "temp_mean")
+    norm_var(np_rh_mean, sgpmet, "rh_mean")
+    norm_var(np_vapor_pressure_mean, sgpmet, "vapor_pressure_mean")
+    norm_var(np_wspd_arith_mean, sgpmet, "wspd_arith_mean")
     # Calculate pearson correlations between sgpmet variables
     met_pearson.mat = np.corrcoef(sgpmet)
 
@@ -114,12 +114,12 @@ def get_pearson_corr(met_pearson):
     np_wspd_arith_mean        = np.asarray([x for x in tmp_wspd_arith_mean if x is not None])
     np_tbrg_precip_total_corr = np.asarray([x for x in tmp_tbrg_precip_total_corr if x is not None])
     # Normalize sgpmet variables
-    norm_var(np_atmos_pressure, sgpmet)
-    norm_var(np_temp_mean, sgpmet)
-    norm_var(np_rh_mean, sgpmet)
-    norm_var(np_vapor_pressure_mean, sgpmet)
-    norm_var(np_wspd_arith_mean, sgpmet)
-    norm_var(np_tbrg_precip_total_corr, sgpmet)
+    norm_var(np_atmos_pressure, sgpmet, "atmos_pressure")
+    norm_var(np_temp_mean, sgpmet, "temp_mean")
+    norm_var(np_rh_mean, sgpmet, "rh_mean")
+    norm_var(np_vapor_pressure_mean, sgpmet, "vapor_pressure_mean")
+    norm_var(np_wspd_arith_mean, sgpmet, "wspd_arith_mean")
+    norm_var(np_tbrg_precip_total_corr, sgpmet, "tbrg_precip_total_corr")
     # Calculate pearson correlations between sgpmet variables
     met_pearson.mat1 = np.corrcoef(sgpmet)
 
@@ -153,12 +153,12 @@ def get_pearson_corr_lag(met_pearson):
     np_wspd_arith_mean        = np.asarray([x for x in tmp_wspd_arith_mean if x is not None])
     np_tbrg_precip_total_corr = np.asarray([x for x in tmp_tbrg_precip_total_corr if x is not None])
     # Normalize sgpmet variables
-    norm_var(np_atmos_pressure, sgpmet)
-    norm_var(np_temp_mean, sgpmet)
-    norm_var(np_rh_mean, sgpmet)
-    norm_var(np_vapor_pressure_mean, sgpmet)
-    norm_var(np_wspd_arith_mean, sgpmet)
-    norm_var(np_tbrg_precip_total_corr, sgpmet)
+    norm_var(np_atmos_pressure, sgpmet, "atmos_pressure")
+    norm_var(np_temp_mean, sgpmet, "temp_mean")
+    norm_var(np_rh_mean, sgpmet, "rh_mean")
+    norm_var(np_vapor_pressure_mean, sgpmet, "vapor_pressure_mean")
+    norm_var(np_wspd_arith_mean, sgpmet, "wspd_arith_mean")
+    norm_var(np_tbrg_precip_total_corr, sgpmet, "tbrg_precip_total_corr")
     # Calculate pearson correlations between sgpmet variables
     met_pearson.mat2 = np.corrcoef(sgpmet)
 
@@ -218,7 +218,7 @@ def main(argv):
     parser.add_argument("inst", metavar="instrument", help="the instrument name")
     parser.add_argument("year", type=int, help="the year to calculate")
     args = parser.parse_args()
-
+    print("Begin: ", args.inst, " ", args.year, file=sys.stderr)
     span = total_days(args.year)
     met_pearson = MetPearson(span)
     read_netcdf(args.path, args.year, args.inst, met_pearson)
@@ -229,22 +229,23 @@ def main(argv):
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.0.csv'
-    np.savetxt(csv_name, met_pearson.mat, delimiter=",", comments="", \
+    np.savetxt(csv_name, met_pearson.mat, delimiter=",", comments="", fmt='%1.6f', \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean")
     # Save mat1
     csv_name = ''
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.1.csv'
-    np.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", \
+    np.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", fmt='%1.6f', \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
     # Save mat2
     csv_name = ''
     csv_name += args.inst
     csv_name += str(args.year)
     csv_name += '.2.csv'
-    np.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", \
+    np.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", fmt='%1.6f', \
                   header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
+    print("Done", file=sys.stderr)
     return 0
 
 if __name__ == "__main__":
