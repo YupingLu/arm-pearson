@@ -4,13 +4,13 @@
 
 '''
 met4 with precip_corr one day lag
-[[ 1.         -0.34481061  0.26271951 -0.24105371 -0.32935386 -0.13252701]
- [-0.34481061  1.         -0.31812254  0.7955031  -0.16430328  0.22782522]
- [ 0.26271951 -0.31812254  1.          0.26061945 -0.20327143 -0.12360976]
- [-0.24105371  0.7955031   0.26061945  1.         -0.2534877   0.17495389]
- [-0.32935386 -0.16430328 -0.20327143 -0.2534877   1.         -0.00563535]
- [-0.13252701  0.22782522 -0.12360976  0.17495389 -0.00563535  1.        ]]
- '''
+ [[ 1.         -0.41460722  0.15877791 -0.32138646 -0.56875752 -0.14760503]
+ [-0.41460722  1.         -0.37115563  0.79726653  0.31460239  0.25197406]
+ [ 0.15877791 -0.37115563  1.          0.22130124 -0.37945195 -0.08137588]
+ [-0.32138646  0.79726653  0.22130124  1.          0.08483531  0.21143434]
+ [-0.56875752  0.31460239 -0.37945195  0.08483531  1.          0.03431135]
+ [-0.14760503  0.25197406 -0.08137588  0.21143434  0.03431135  1.        ]]
+'''
 
 # Load libs
 import netCDF4
@@ -22,8 +22,8 @@ from os import listdir
 from os.path import isfile, join
 
 # Calculate the days between the given time span
-start = datetime.date(2017, 1, 1)
-end = datetime.date(2017, 12, 31)
+start = datetime.date(2016, 1, 1)
+end = datetime.date(2016, 12, 31)
 span = end - start
 
 # Assgin sgpmetE11 vars with specific length
@@ -44,7 +44,7 @@ sgpmetE11 = []
 names = ['atmos_pressure', 'temp_mean', 'rh_mean', 'vapor_pressure_mean', 'wspd_arith_mean', 'tbrg_precip_total_corr']
 
 # Read netcdf files
-path = "/Users/yupinglu/OneDrive/project/ARM/data/sample_data"
+path = "/Users/yupinglu/OneDrive/project/ARM/data/sgpmetE11"
 # path = "/Users/ylk/OneDrive/project/ARM/data/sgpmetE11"
 netcdfs = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".cdf")]
 
@@ -68,7 +68,7 @@ for cdf in netcdfs:
     dates = netCDF4.num2date(tm[:], units=tm.units)
     # Read data into different sgpmetE11 vars with filter applied
     for i in range(len(atmos_pressure)):
-        index = int((dates[i] - datetime.datetime(2017, 1, 1, 0, 0)).total_seconds() / 60)
+        index = int((dates[i] - datetime.datetime(2016, 1, 1, 0, 0)).total_seconds() / 60)
         sgpmetE11_atmos_pressure[index]            = atmos_pressure[i]
         sgpmetE11_temp_mean[index]                 = temp_mean[i]
         sgpmetE11_rh_mean[index]                   = rh_mean[i]
@@ -169,11 +169,3 @@ print(mat)
 #ax.set_yticklabels(names)
 #plt.show()
 
-'''
-[[ 1.         -0.57047323 -0.33150279 -0.51431958 -0.51142508  0.00670031]
- [-0.57047323  1.         -0.23464512  0.08683744  0.70886996  0.21494305]
- [-0.33150279 -0.23464512  1.          0.94587296 -0.48804501 -0.42986727]
- [-0.51431958  0.08683744  0.94587296  1.         -0.26041174 -0.37324093]
- [-0.51142508  0.70886996 -0.48804501 -0.26041174  1.          0.37000441]
- [ 0.00670031  0.21494305 -0.42986727 -0.37324093  0.37000441  1.        ]]
-'''

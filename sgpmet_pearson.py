@@ -19,7 +19,7 @@ from os.path import isfile, join
 
 # Met Pearson Correlation
 class MetPearson:
-    '''Class to store the related variables and compute the correlation matrix'''
+    '''Class to store the related variables and computed correlation matrices'''
     # Assgin sgpmet vars with specific length
     def __init__(self, span):
         self.span                      = span
@@ -142,7 +142,7 @@ def get_pearson_corr_lag(met_pearson):
             tmp_rh_mean[i]                = met_pearson.rh_mean[i]
             tmp_vapor_pressure_mean[i]    = met_pearson.vapor_pressure_mean[i]
             tmp_wspd_arith_mean[i]        = met_pearson.wspd_arith_mean[i] 
-            tmp_tbrg_precip_total_corr[i] = met_pearson.tbrg_precip_total_corr[i]
+            tmp_tbrg_precip_total_corr[i] = met_pearson.tbrg_precip_total_corr[i+1440]
 
     sgpmet = []
     # Filter empty values
@@ -162,7 +162,7 @@ def get_pearson_corr_lag(met_pearson):
     # Calculate pearson correlations between sgpmet variables
     met_pearson.mat2 = np.corrcoef(sgpmet)
 
-# Read netcdf files and return the correlation matrix
+# Read netcdf files and return the correlation matrices
 def read_netcdf(path, year, met_pearson):
     netcdfs = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".cdf")]
 
@@ -217,12 +217,20 @@ def main(argv):
     path = "/Users/yupinglu/OneDrive/project/ARM/data/sample_data"
 
     read_netcdf(path, args.year, met_pearson)
-    print("mat")
-    print(met_pearson.mat)
-    print("mat1")
-    print(met_pearson.mat1)
-    print("mat2")
-    print(met_pearson.mat2)
+
+    # Instrument_name_year.csv
+    # Save mat
+    numpy.savetxt("mat.csv", met_pearson.mat, delimiter=",", comments="", \
+                  header="atmos_pressure, temp_mean, rh_mean, \
+                  vapor_pressure_mean, wspd_arith_mean")
+    # Save mat1
+    numpy.savetxt("mat1.csv", met_pearson.mat1, delimiter=",", comments="", \
+                  header="atmos_pressure, temp_mean, rh_mean, \
+                  vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
+    # Save mat2
+    numpy.savetxt("mat2.csv", met_pearson.mat2, delimiter=",", comments="", \
+                  header="atmos_pressure, temp_mean, rh_mean, \
+                  vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
     return 0
 
 if __name__ == "__main__":
