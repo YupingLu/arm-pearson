@@ -14,8 +14,8 @@ import argparse
 import netCDF4
 import numpy as np
 import datetime
-from os import listdir
-from os.path import isfile, join
+import fnmatch
+import os
 
 # Met Pearson Correlation
 class MetPearson:
@@ -164,42 +164,48 @@ def get_pearson_corr_lag(met_pearson):
 
 # Read netcdf files and return the correlation matrices
 def read_netcdf(path, year, met_pearson):
-    netcdfs = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".cdf")]
+    pattern = 'sgpmet'
+    pattern += inst
+    pattern += '.??.'
+    pattern += str(year)
+    pattern += '*'
+    pattern += '.cdf'
 
-    for cdf in netcdfs:
-        f = netCDF4.Dataset(join(path,cdf))
-        # Read variables
-        tm                        = f.variables['time']
-        atmos_pressure            = f.variables['atmos_pressure']
-        temp_mean                 = f.variables['temp_mean']
-        rh_mean                   = f.variables['rh_mean']
-        vapor_pressure_mean       = f.variables['vapor_pressure_mean']
-        wspd_arith_mean           = f.variables['wspd_arith_mean']
-        tbrg_precip_total_corr    = f.variables['tbrg_precip_total_corr']
-        qc_atmos_pressure         = f.variables['qc_atmos_pressure']
-        qc_temp_mean              = f.variables['qc_temp_mean']
-        qc_rh_mean                = f.variables['qc_rh_mean']
-        qc_vapor_pressure_mean    = f.variables['qc_vapor_pressure_mean']
-        qc_wspd_arith_mean        = f.variables['qc_wspd_arith_mean']
-        qc_tbrg_precip_total_corr = f.variables['qc_tbrg_precip_total_corr']
-        # Convert numeric values of time in the specified units and calendar to datetime objects
-        dates = netCDF4.num2date(tm[:], units=tm.units)
-        # Read data into different sgpmet vars with filter applied
-        for i in range(len(atmos_pressure)):
-            index = int((dates[i] - datetime.datetime(year, 1, 1, 0, 0)).total_seconds() / 60)
-            met_pearson.atmos_pressure[index]            = atmos_pressure[i]
-            met_pearson.temp_mean[index]                 = temp_mean[i]
-            met_pearson.rh_mean[index]                   = rh_mean[i]
-            met_pearson.vapor_pressure_mean[index]       = vapor_pressure_mean[i]
-            met_pearson.wspd_arith_mean[index]           = wspd_arith_mean[i] 
-            met_pearson.tbrg_precip_total_corr[index]    = tbrg_precip_total_corr[i]
-            met_pearson.qc_atmos_pressure[index]         = qc_atmos_pressure[i]
-            met_pearson.qc_temp_mean[index]              = qc_temp_mean[i]
-            met_pearson.qc_rh_mean[index]                = qc_rh_mean[i]
-            met_pearson.qc_vapor_pressure_mean[index]    = qc_vapor_pressure_mean[i]
-            met_pearson.qc_wspd_arith_mean[index]        = qc_wspd_arith_mean[i] 
-            met_pearson.qc_tbrg_precip_total_corr[index] = qc_tbrg_precip_total_corr[i]
-        f.close()
+    for cdf in os.listdir(path):
+        if fnmatch.fnmatch(cdf, pattern):
+            f = netCDF4.Dataset(os.path.join(path,cdf))
+            # Read variables
+            tm                        = f.variables['time']
+            atmos_pressure            = f.variables['atmos_pressure']
+            temp_mean                 = f.variables['temp_mean']
+            rh_mean                   = f.variables['rh_mean']
+            vapor_pressure_mean       = f.variables['vapor_pressure_mean']
+            wspd_arith_mean           = f.variables['wspd_arith_mean']
+            tbrg_precip_total_corr    = f.variables['tbrg_precip_total_corr']
+            qc_atmos_pressure         = f.variables['qc_atmos_pressure']
+            qc_temp_mean              = f.variables['qc_temp_mean']
+            qc_rh_mean                = f.variables['qc_rh_mean']
+            qc_vapor_pressure_mean    = f.variables['qc_vapor_pressure_mean']
+            qc_wspd_arith_mean        = f.variables['qc_wspd_arith_mean']
+            qc_tbrg_precip_total_corr = f.variables['qc_tbrg_precip_total_corr']
+            # Convert numeric values of time in the specified units and calendar to datetime objects
+            dates = netCDF4.num2date(tm[:], units=tm.units)
+            # Read data into different sgpmet vars with filter applied
+            for i in range(len(atmos_pressure)):
+                index = int((dates[i] - datetime.datetime(year, 1, 1, 0, 0)).total_seconds() / 60)
+                met_pearson.atmos_pressure[index]            = atmos_pressure[i]
+                met_pearson.temp_mean[index]                 = temp_mean[i]
+                met_pearson.rh_mean[index]                   = rh_mean[i]
+                met_pearson.vapor_pressure_mean[index]       = vapor_pressure_mean[i]
+                met_pearson.wspd_arith_mean[index]           = wspd_arith_mean[i] 
+                met_pearson.tbrg_precip_total_corr[index]    = tbrg_precip_total_corr[i]
+                met_pearson.qc_atmos_pressure[index]         = qc_atmos_pressure[i]
+                met_pearson.qc_temp_mean[index]              = qc_temp_mean[i]
+                met_pearson.qc_rh_mean[index]                = qc_rh_mean[i]
+                met_pearson.qc_vapor_pressure_mean[index]    = qc_vapor_pressure_mean[i]
+                met_pearson.qc_wspd_arith_mean[index]        = qc_wspd_arith_mean[i] 
+                met_pearson.qc_tbrg_precip_total_corr[index] = qc_tbrg_precip_total_corr[i]
+            f.close()
 
     get_pearson(met_pearson)
     get_pearson_corr(met_pearson)
@@ -208,27 +214,38 @@ def read_netcdf(path, year, met_pearson):
 # Main
 def main(argv):
     parser = argparse.ArgumentParser()
+    parser.add_argument("path", help="data file path")
     parser.add_argument("inst", metavar="instrument", help="the instrument name")
     parser.add_argument("year", type=int, help="the year to calculate")
     args = parser.parse_args()
 
     span = total_days(args.year)
     met_pearson = MetPearson(span)
-    path = "/Users/yupinglu/OneDrive/project/ARM/data/sample_data"
-
-    read_netcdf(path, args.year, met_pearson)
+    read_netcdf(args.path, args.year, met_pearson)
 
     # Instrument_name_year.csv
-    # Save mat
-    numpy.savetxt("mat.csv", met_pearson.mat, delimiter=",", comments="", \
+    # Save mat0
+    csv_name = ''
+    csv_name += args.inst
+    csv_name += str(args.year)
+    csv_name += '.0.csv'
+    numpy.savetxt(csv_name, met_pearson.mat, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, \
                   vapor_pressure_mean, wspd_arith_mean")
     # Save mat1
-    numpy.savetxt("mat1.csv", met_pearson.mat1, delimiter=",", comments="", \
+    csv_name = ''
+    csv_name += args.inst
+    csv_name += str(args.year)
+    csv_name += '.1.csv'
+    numpy.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, \
                   vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
     # Save mat2
-    numpy.savetxt("mat2.csv", met_pearson.mat2, delimiter=",", comments="", \
+    csv_name = ''
+    csv_name += args.inst
+    csv_name += str(args.year)
+    csv_name += '.2.csv'
+    numpy.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", \
                   header="atmos_pressure, temp_mean, rh_mean, \
                   vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
     return 0
