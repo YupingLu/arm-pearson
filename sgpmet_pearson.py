@@ -44,11 +44,12 @@ def total_days(year):
 
 # Normalize sgpmet variables
 def norm_var(met_var, sgpmet, name):
-    if (met_var.max() - met_var.min()) == 0:
-        print(name, ": Zero Values", file=sys.stderr)
-        sys.exit(1)
-    else:
+    try:
         sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
+    except Exception as e:
+        print(name, ": Zero Values", file=sys.stderr)
+        traceback.print_exc()
+        sys.exit(1)
 
 # Calculate the correlation matrix
 def get_pearson(met_pearson):
