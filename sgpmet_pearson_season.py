@@ -65,10 +65,10 @@ def season_days(year):
 
 # Normalize sgpmet variables
 def norm_var(met_var, sgpmet, name):
-    if (met_var.max() - met_var.min()) != 0:
-        sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
+    if met_var.size == 0 or met_var.max() == met_var.min():
+        sgpmet.append(met_var/met_var)
     else:
-        sgpmet.append("NA")
+        sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
 
 # Calculate Pearson Correlation
 def pearson(tmp_atmos_pressure, tmp_temp_mean, tmp_rh_mean, \
@@ -122,7 +122,7 @@ def get_pearson(met_pearson):
 
 # Calculate Pearson Correlation
 def pearson_corr(tmp_atmos_pressure, tmp_temp_mean, tmp_rh_mean, tmp_vapor_pressure_mean, \
-                tmp_wspd_arith_mean, np_tbrg_precip_total_corr):
+                tmp_wspd_arith_mean, tmp_tbrg_precip_total_corr):
     sgpmet = []
     # Filter empty values
     np_atmos_pressure         = np.asarray([x for x in tmp_atmos_pressure if x is not None])
