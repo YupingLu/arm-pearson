@@ -291,7 +291,7 @@ def main(argv):
         csv_name += '.'
         csv_name += str(i)
         csv_name += '.1.csv'
-        np.savetxt(csv_name, met_pearson.mat1, delimiter=",", comments="", fmt='%1.6f', \
+        np.savetxt(csv_name, met_pearson.mat1[i], delimiter=",", comments="", fmt='%1.6f', \
             header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
         # Save mat2
         csv_name = ''
@@ -300,7 +300,7 @@ def main(argv):
         csv_name += '.'
         csv_name += str(i)
         csv_name += '.2.csv'
-        np.savetxt(csv_name, met_pearson.mat2, delimiter=",", comments="", fmt='%1.6f', \
+        np.savetxt(csv_name, met_pearson.mat2[i], delimiter=",", comments="", fmt='%1.6f', \
             header="atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr")
     
     print("Done", file=sys.stderr)
