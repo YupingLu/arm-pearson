@@ -13,7 +13,7 @@
 # 10) winter met correlation without qc_tbrg_precip_total_corr
 # 11) winter met correlation with qc_tbrg_precip_total_corr
 # 12) winter met correlation with qc_tbrg_precip_total_corr and one day lag
-# Usage : python sgpmet_pearson_season instrument_name year
+# Usage : python sgpmet_pearson_season path instrument_name year
 # Author: Yuping Lu yupinglu89@gmail.com
 # Date  : Jan 18 2018
 
@@ -68,9 +68,7 @@ def norm_var(met_var, sgpmet, name):
     try:
         sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
     except Exception as e:
-        print(name, ": Zero Values", file=sys.stderr)
-        traceback.print_exc()
-        sys.exit(1)
+        sgpmet.append("NA")
 
 # Calculate Pearson Correlation
 def pearson(tmp_atmos_pressure, tmp_temp_mean, tmp_rh_mean, \

@@ -4,7 +4,7 @@
 # 1) met correlation without qc_tbrg_precip_total_corr
 # 2) met correlation with qc_tbrg_precip_total_corr
 # 3) met correlation with qc_tbrg_precip_total_corr and one day lag
-# Usage : python sgpmet_pearson instrument_name year
+# Usage : python sgpmet_pearson path instrument_name year
 # Author: Yuping Lu yupinglu89@gmail.com
 # Date  : Dec 25 2017
 
