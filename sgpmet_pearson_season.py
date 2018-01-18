@@ -65,9 +65,9 @@ def season_days(year):
 
 # Normalize sgpmet variables
 def norm_var(met_var, sgpmet, name):
-    try:
+    if (met_var.max() - met_var.min()) != 0:
         sgpmet.append((met_var - met_var.min()) / (met_var.max() - met_var.min()))
-    except Exception as e:
+    else:
         sgpmet.append("NA")
 
 # Calculate Pearson Correlation
