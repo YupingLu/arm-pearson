@@ -38,7 +38,7 @@ def readCSVFile(path, inst):
     pattern = inst
     pattern += '*'
     pattern += '????.'
-    pattern += '*'  ###season
+    pattern += '?'  ###season
     pattern += '.0.csv'
     for csvf in os.listdir(path):
         if fnmatch.fnmatch(csvf, pattern):
@@ -83,17 +83,21 @@ def readCSVFile(path, inst):
 
 # IQR method
 def outliers_iqr(x, varname):
+    tmp_season = ['0', '1', '2', '3']
     res = []
-    pc = []
-    for i in x:
-        pc.append(i.pc)
-    quartile_1, quartile_3 = np.percentile(pc, [25, 75])
-    iqr = quartile_3 - quartile_1
-    lower_bound = quartile_1 - (iqr * 1.5)
-    upper_bound = quartile_3 + (iqr * 1.5)
-    for i in x:
-        if (i.pc > upper_bound) | (i.pc < lower_bound):
-            res.append(i)
+    for t in tmp_season:
+        pc = []
+        for i in x:
+            if i.season == t:
+                pc.append(i.pc)
+        quartile_1, quartile_3 = np.percentile(pc, [25, 75])
+        iqr = quartile_3 - quartile_1
+        lower_bound = quartile_1 - (iqr * 1.5)
+        upper_bound = quartile_3 + (iqr * 1.5)
+        for i in x:
+            if i.season == t:
+                if (i.pc > upper_bound) | (i.pc < lower_bound):
+                    res.append(i)
     np.savetxt(varname, sorted(res, key=lambda x: x.year), delimiter=",", comments="", fmt='%s')
 
 # Main
