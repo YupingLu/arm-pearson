@@ -36,9 +36,9 @@ def readCSVFile(path, cdf):
 
 # Main
 def main(argv):
-    path = 'E11_2017.csv'
+    path = '/Users/yupinglu/github/arm/netcdf_year_viz/E11_1993_2017.csv'
     inst = 'E11'
-    year = '2017'
+    year = '1993-2017'
     cdf = CDF() 
     readCSVFile(path, cdf)
 
@@ -83,7 +83,8 @@ def main(argv):
     plotly.offline.plot({
         "data": [trace0, trace1, trace2, trace3, trace4, trace5],
         "layout": go.Layout(title=inst + " " + year)
-    })
+        
+    }, filename =inst+'-'+year+'.html', show_link = False, auto_open = False)
 
 
 if __name__ == "__main__":
