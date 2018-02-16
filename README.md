@@ -23,7 +23,7 @@ This is a simple explanation of our analysis using pearson correlation and how t
   csvplot.2.py: python csvplot.2.py
   # Output files are stored in figures
 ```
-4. Use violin plot to visualize the year-round pearson correlations
+4. Use violin plot to visualize the seaonal pearson correlations
 ```
   csvplot.season.py: python csvplot.season.py
   csvplot.season.1.py: python csvplot.season.1.py    
