@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Script to plot netcdf data from netcdf_inst_*_year.py
-# Usage : python netcdf_plot.py path
+# Script to plot netcdf data from netcdf_inst_*_year.py in batch
+# Usage : python netcdf_plot.py
 # Author: Yuping Lu yupinglu89@gmail.com
-# Date  : Feb 6 2018
+# Date  : Feb 15 2018
 
 # Load libs
 import sys
