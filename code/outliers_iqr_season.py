@@ -81,6 +81,26 @@ def readCSVFile(path, inst):
                 x10.append(X(int(year), inst, float(vapor_pressure_mean[5]), season))
     return x1, x2, x3, x4, x5, x6, x7, x8, x9, x10
 
+# Modified Z score method
+def outliers_modified_z_score(x, varname):
+    threshold = 3.5
+    tmp_season = ['0', '1', '2', '3']
+    res = []
+    for t in tmp_season:
+        pc = []
+        for i in x:
+            if i.season == t:
+                pc.append(i.pc)
+        median = np.median(pc)
+        median_absolute_deviation = np.median([np.abs(y - median) for y in pc])
+        if median_absolute_deviation != 0:
+            for i in x:
+                if i.season == t:
+                    modified_z_scores = 0.6745 * (i.pc - median) / median_absolute_deviation
+                    if np.abs(modified_z_scores) > threshold:
+                        res.append(i)
+    np.savetxt(varname, sorted(res, key=lambda x: x.year), delimiter=",", comments="", fmt='%s')
+
 # IQR method
 def outliers_iqr(x, varname):
     tmp_season = ['0', '1', '2', '3']
@@ -107,16 +127,16 @@ def main(argv):
 
     x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 = readCSVFile(path, inst)
     
-    outliers_iqr(x1, "x1")
-    outliers_iqr(x2, "x2")
-    outliers_iqr(x3, "x3")
-    outliers_iqr(x4, "x4")
-    outliers_iqr(x5, "x5")
-    outliers_iqr(x6, "x6")
-    outliers_iqr(x7, "x7")
-    outliers_iqr(x8, "x8")
-    outliers_iqr(x9, "x9")
-    outliers_iqr(x10, "x10")
+    outliers_modified_z_score(x1, "x1")
+    outliers_modified_z_score(x2, "x2")
+    outliers_modified_z_score(x3, "x3")
+    outliers_modified_z_score(x4, "x4")
+    outliers_modified_z_score(x5, "x5")
+    outliers_modified_z_score(x6, "x6")
+    outliers_modified_z_score(x7, "x7")
+    outliers_modified_z_score(x8, "x8")
+    outliers_modified_z_score(x9, "x9")
+    outliers_modified_z_score(x10, "x10")
 
 if __name__ == "__main__":
     try:
