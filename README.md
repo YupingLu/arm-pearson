@@ -43,9 +43,9 @@ This is a simple explanation of our analysis using pearson correlation and how t
 6. Use modified z scores method to calculate the outliers
 ```
   outliers_iqr_year.py: python outliers_iqr_season.py
-  # Output files are stored in outliers/season
+  # Output files are stored in outliers/modified_z_score_season
   outliers_iqr_season.py: python outliers_iqr_year.py
-  # Output files are stored in outliers/year
+  # Output files are stored in outliers/modified_z_score_year
 ```
 7. Use plotly to visualize all instruments data
 ```
