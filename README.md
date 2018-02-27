@@ -61,6 +61,6 @@ This is a simple explanation of our analysis using pearson correlation and how t
   # Input data is from step 5 and step 6
   # Script to plot netcdf data with seasonal outliers from netcdf_inst_*_year.py in batch
   netcdf_plot_season_outlier.py: python netcdf_plot_season_outlier.py
-  # Output files are stored in plotly/netcdf_plot_outlier
+  # Output files are stored in plotly/netcdf_plot_modified_z_score_outlier
 ```                                     
                   
