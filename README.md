@@ -40,7 +40,7 @@ This is a simple explanation of our analysis using pearson correlation and how t
   netcdf_inst_all_year.sh: nohup ./netcdf_inst_all_year.sh > foo.out 2> foo.err < /dev/null &
   # Output files are stored in netcdf_year_viz
 ```
-6. Use IQR method to calculate the outliers
+6. Use modified z scores method to calculate the outliers
 ```
   outliers_iqr_year.py: python outliers_iqr_season.py
   # Output files are stored in outliers/season
