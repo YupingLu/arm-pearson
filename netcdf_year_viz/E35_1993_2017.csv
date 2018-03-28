@@ -1,4 +1,4 @@
-date, atmos_pressure, temp_mean, rh_mean, vapor_pressure_mean, wspd_arith_mean, tbrg_precip_total_corr
+date,atmos_pressure,temp_mean,rh_mean,vapor_pressure_mean,wspd_arith_mean,tbrg_precip_total_corr
 1993-01-01 00:00:00,None,None,None,None,None,None
 1993-01-02 00:00:00,None,None,None,None,None,None
 1993-01-03 00:00:00,None,None,None,None,None,None
