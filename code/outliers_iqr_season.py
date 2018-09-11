@@ -3,7 +3,7 @@
 # Usage : python outliers_iqr_season.py
 # File path is hard coded, remember to change it.
 # Author: Yuping Lu yupinglu89@gmail.com
-# Date  : Feb 12 2018
+# Date  : Sept 11 2018
 
 # Load libs
 import sys
@@ -120,23 +120,42 @@ def outliers_iqr(x, varname):
                     res.append(i)
     np.savetxt(varname, sorted(res, key=lambda x: x.year), delimiter=",", comments="", fmt='%s')
 
+# 3 sigma method (too aggressive)
+def outliers_sigma(x, varname):
+    tmp_season = ['0', '1', '2', '3']
+    res = []
+    for t in tmp_season:
+        pc = []
+        for i in x:
+            if i.season == t:
+                pc.append(i.pc)
+        mu = np.mean(pc)
+        sigma = np.std(pc)        
+        ci0 = mu - 3 * sigma
+        ci1 = mu + 3 * sigma
+        for i in x:
+            if i.season == t:
+                if (i.pc > ci0) or (i.pc < ci1):
+                    res.append(i)
+    np.savetxt(varname, sorted(res, key=lambda x: x.year), delimiter=",", comments="", fmt='%s')
+
 # Main
 def main(argv):
-    path = "/Users/ylk/Documents/GitHub/arm/season.pc.csv"
+    path = "/Users/ylk/github/arm-pearson/season.pc.csv"
     inst = "E"
 
     x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 = readCSVFile(path, inst)
     
-    outliers_modified_z_score(x1, "x1")
-    outliers_modified_z_score(x2, "x2")
-    outliers_modified_z_score(x3, "x3")
-    outliers_modified_z_score(x4, "x4")
-    outliers_modified_z_score(x5, "x5")
-    outliers_modified_z_score(x6, "x6")
-    outliers_modified_z_score(x7, "x7")
-    outliers_modified_z_score(x8, "x8")
-    outliers_modified_z_score(x9, "x9")
-    outliers_modified_z_score(x10, "x10")
+    outliers_sigma(x1, "x1")
+    outliers_sigma(x2, "x2")
+    outliers_sigma(x3, "x3")
+    outliers_sigma(x4, "x4")
+    outliers_sigma(x5, "x5")
+    outliers_sigma(x6, "x6")
+    outliers_sigma(x7, "x7")
+    outliers_sigma(x8, "x8")
+    outliers_sigma(x9, "x9")
+    outliers_sigma(x10, "x10")
 
 if __name__ == "__main__":
     try:
