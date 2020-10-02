@@ -63,4 +63,6 @@ This is a simple explanation of our analysis using pearson correlation and how t
   netcdf_plot_season_outlier.py: python netcdf_plot_season_outlier.py
   # Output files are stored in plotly/netcdf_plot_modified_z_score_outlier
 ```                                     
-                  
+Reference Paper
+---------------
+Y. Lu, J. Kumar, N. Collier, B. Krishna and M. A. Langston, "Detecting Outliers in Streaming Time Series Data from ARM Distributed Sensors," 2018 IEEE International Conference on Data Mining Workshops (ICDMW), Singapore, Singapore, 2018, pp. 779-786, doi: 10.1109/ICDMW.2018.00117.                 
